@@ -1,0 +1,131 @@
+# Student Management System - Python Implementation
+
+# Global list to store student records
+students = []
+
+def add_student():
+    """Add a new student record"""
+    print("\n--- Add New Student ---")
+    student_id = input("Enter Student ID: ").strip()
+    
+    # Check if ID already exists
+    for student in students:
+        if student['id'] == student_id:
+            print("Error: Student ID already exists!")
+            return
+    
+    name = input("Enter Student Name: ").strip()
+    age = input("Enter Student Age: ").strip()
+    course = input("Enter Course/Program: ").strip()
+
+    # Create student dictionary and add to list
+    new_student = {
+        "id": student_id,
+        "name": name,
+        "age": age,
+        "course": course
+    }
+    students.append(new_student)
+    print("✅ Student added successfully!")
+
+def view_all_students():
+    """Display all student records"""
+    if not students:
+        print("\n❌ No student records found.")
+        return
+    
+    print("\n--- All Student Records ---")
+    print(f"{'ID':<10} {'Name':<20} {'Age':<5} {'Course'}")
+    print("-" * 50)
+    for student in students:
+        print(f"{student['id']:<10} {student['name']:<20} {student['age']:<5} {student['course']}")
+
+def search_student():
+    """Search student by ID"""
+    print("\n--- Search Student ---")
+    search_id = input("Enter Student ID to search: ").strip()
+    
+    for student in students:
+        if student['id'] == search_id:
+            print("\nStudent Found:")
+            print(f"ID: {student['id']}")
+            print(f"Name: {student['name']}")
+            print(f"Age: {student['age']}")
+            print(f"Course: {student['course']}")
+            return
+    
+    print("❌ Student not found.")
+
+def update_student():
+    """Update existing student details"""
+    print("\n--- Update Student Record ---")
+    update_id = input("Enter Student ID to update: ").strip()
+    
+    for student in students:
+        if student['id'] == update_id:
+            print("Enter new details (leave blank to keep current value):")
+            new_name = input(f"New Name [{student['name']}]: ").strip()
+            new_age = input(f"New Age [{student['age']}]: ").strip()
+            new_course = input(f"New Course [{student['course']}]: ").strip()
+
+            # Update only if new value is provided
+            if new_name:
+                student['name'] = new_name
+            if new_age:
+                student['age'] = new_age
+            if new_course:
+                student['course'] = new_course
+            
+            print("✅ Student record updated successfully!")
+            return
+    
+    print("❌ Student not found.")
+
+def delete_student():
+    """Delete a student record"""
+    print("\n--- Delete Student Record ---")
+    delete_id = input("Enter Student ID to delete: ").strip()
+    
+    global students
+    # Filter out the student with given ID
+    updated_list = [s for s in students if s['id'] != delete_id]
+    
+    if len(updated_list) == len(students):
+        print("❌ Student not found.")
+    else:
+        students = updated_list
+        print("✅ Student record deleted successfully!")
+
+def main_menu():
+    """Display main menu and handle user choice"""
+    while True:
+        print("\n===== STUDENT MANAGEMENT SYSTEM =====")
+        print("1. Add Student")
+        print("2. View All Students")
+        print("3. Search Student by ID")
+        print("4. Update Student Record")
+        print("5. Delete Student Record")
+        print("6. Exit")
+        print("=" * 40)
+
+        choice = input("Enter your choice (1-6): ").strip()
+
+        if choice == "1":
+            add_student()
+        elif choice == "2":
+            view_all_students()
+        elif choice == "3":
+            search_student()
+        elif choice == "4":
+            update_student()
+        elif choice == "5":
+            delete_student()
+        elif choice == "6":
+            print("👋 Exiting system. Goodbye!")
+            break
+        else:
+            print("❌ Invalid choice! Please enter a number between 1 and 6.")
+
+# Run the system
+if __name__ == "__main__":
+    main_menu()
